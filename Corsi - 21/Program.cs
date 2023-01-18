@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ namespace Corsi___21
             //dichiarazioni 
             int[] array = new int[100];
             int elemento;
+            string stampa;
             int indice = 0;
             int IndiceRicerca = 0;
             int IndiceAggiunta = 0;
@@ -25,10 +27,11 @@ namespace Corsi___21
                 //stampa delle opzioni
                 Console.Clear();
                 Console.WriteLine("1 - aggiunta di un elemento all'array");
-                Console.WriteLine("2 - stampa degli elementi caricati");
+                Console.WriteLine("2 - stampa degli elementi caricati in formato html");
                 Console.WriteLine("3 - ricerca di un elemento nell'array");
                 Console.WriteLine("4 - cancellazione di un elemento dall'array");
                 Console.WriteLine("5 - Inserimento di un valore in una posizione dell'array");
+                Console.WriteLine("6 - stampa degli elementi caricati in formato normale");
                 Console.WriteLine("0 - uscita dal programma");
                 //scelta delle opzione
                 Console.WriteLine("Inserisci la scelta: ");
@@ -50,12 +53,9 @@ namespace Corsi___21
                         Console.ReadLine();
                         break;
                     case 2:
-                        //ciclo per stampare l'array
-                        Console.WriteLine("");
-                        for (int i = 0; i < indice; i++)
-                        {
-                            Console.Write(array[i] + ", ");
-                        }
+                        //assegnazione ad una stringa stampa la stringa html
+                        stampa = Stampa(array, indice);
+                        Console.WriteLine(stampa);
                         Console.WriteLine("Premere un pulsante per continuare...");
                         Console.ReadLine();
                         break;
@@ -93,10 +93,12 @@ namespace Corsi___21
                         Console.ReadLine();
                         break;
                     case 5:
+                        //input
                         Console.WriteLine("\nInserire un elemento: ");
                         elemento = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("\nInserire la posizione nell'array dove si vuole inserire l'elemento: ");
                         posizione = Convert.ToInt32(Console.ReadLine());
+                        //condizione per verificare che l'array non sia pieno
                         if (Inserimento(ref array, elemento, IndiceAggiunta, ref indice, posizione) == true)
                         {
                             Console.WriteLine("\nElemento inserito correttamente");
@@ -106,9 +108,18 @@ namespace Corsi___21
                         Console.WriteLine("Premere un pulsante per continuare...");
                         Console.ReadLine();
                         break;
-
+                    case 6:
+                        //stampa per poter andare a capo
+                        Console.WriteLine("");
+                        //ciclo per stampare l'array
+                        for (int i = 0; i < indice; i++)
+                        {
+                            Console.Write(array[i] + ", ");
+                        }
+                        Console.WriteLine("Premere un pulsante per continuare...");
+                        Console.ReadLine();
+                        break;
                 }
-
             } while (scelta != 0);
         }
 
@@ -128,6 +139,27 @@ namespace Corsi___21
                 inserito = false;
             //ritorno in base allo spazio disponibile
             return inserito;
+        }
+
+        //funzione di stampa in html
+        static string Stampa(int[]a, int i)
+        {
+            //dichiarazione della parte iniziale di html
+            string htmlTop = "<html> <head> </head> <body> <tr>";
+            //dichiarazione della colonna
+            string td = "";
+            //dichiarazione della parte finale di html
+            string htmlBottom = "</tr> </body> <html>";
+            //ciclo per creare tante colonne tanti quanti sono gli elementi nell'array
+            for (int z = 0; z < i; z++)
+            {
+                td = td + " <td> " + a[z] + " </td> ";
+               
+            }
+            //stringa finale composta dall'insieme di tutte le altre stringe
+            string html = htmlTop + td + htmlBottom;
+            //restituzione dell'output come se fosse su html
+            return html;
         }
 
         //funzione di ricerca
@@ -203,8 +235,6 @@ namespace Corsi___21
                 controllo = false;
             //restituzione in base alle dimensioni dell'array
             return controllo;
-
-
         }
     }
 }
