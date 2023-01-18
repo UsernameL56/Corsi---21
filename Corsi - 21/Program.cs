@@ -15,6 +15,8 @@ namespace Corsi___21
             int elemento;
             int indice = 0;
             int IndiceRicerca = 0;
+            int IndiceAggiunta = 0;
+            int posizione;
             int scelta = 0;
 
             //struttura menù
@@ -26,6 +28,7 @@ namespace Corsi___21
                 Console.WriteLine("2 - stampa degli elementi caricati");
                 Console.WriteLine("3 - ricerca di un elemento nell'array");
                 Console.WriteLine("4 - cancellazione di un elemento dall'array");
+                Console.WriteLine("5 - Inserimento di un valore in una posizione dell'array");
                 Console.WriteLine("0 - uscita dal programma");
                 //scelta delle opzione
                 Console.WriteLine("Inserisci la scelta: ");
@@ -35,14 +38,14 @@ namespace Corsi___21
                 {
                     case 1:
                         //input
-                        Console.WriteLine("Inserire un elemento: ");
+                        Console.WriteLine("\nInserire un elemento: ");
                         elemento = Convert.ToInt32(Console.ReadLine());
                         //richiamo della funzione
                         if (Aggiungi(array, elemento, ref indice) == true)
                             Console.WriteLine("\nElemento inserito correttamente");
                         else
                             //output in caso si sia raggiunto il numero massimo di elementi che si possono inserire
-                            Console.WriteLine("Array pieno");
+                            Console.WriteLine("\nArray pieno");
                         Console.WriteLine("Premere un pulsante per continuare...");
                         Console.ReadLine();
                         break;
@@ -63,10 +66,10 @@ namespace Corsi___21
                         //richiamo alla funzione Ricerca
                         if (Ricerca(array, elemento, ref IndiceRicerca) == true)
                             //stampa della posizione nell'array dell elemento inserito
-                            Console.WriteLine("L'elemento è stato trovato in posizione " + IndiceRicerca + " dell'array");
+                            Console.WriteLine("\nL'elemento è stato trovato in posizione " + IndiceRicerca + " dell'array");
                         else
                             //output in caso l'elemento inserito non sia nell'array
-                            Console.WriteLine("-1");
+                            Console.WriteLine("\n-1");
                         //azzeramento dell'indice di ricerca così da averlo a 0 per poter ripetere altre ricerche senza causare errori
                         IndiceRicerca = 0;
                         Console.WriteLine("Premere un pulsante per continuare...");
@@ -74,25 +77,36 @@ namespace Corsi___21
                         break;
                     case 4:
                         //input
-                        Console.WriteLine("Inserire l'elemento da cancellare: ");
+                        Console.WriteLine("\nInserire l'elemento da cancellare: ");
                         elemento = Convert.ToInt32(Console.ReadLine());
                         //richiamo alla funzione di ricerca in modo da poter cancellare un elemento che si sa che è presente nell'array
                         if (Ricerca(array, elemento, ref IndiceRicerca) == true)
                         {
                             //richiamo alla funzione di cancellazione
                             array = Cancellazione(array, elemento, ref indice);
-                            //stampa del nuovo array 
-                            for (int i = 0; i < indice; i++)
-                            {
-                                Console.Write(array[i] + ", ");
-                            }
+                            Console.WriteLine("\nElemento cancellato correttamente");
                         }
                         //output in caso l'elemento inserito non sia presente nell'array
                         else
-                            Console.WriteLine("Il numero inserito non è presente nell'array");
+                            Console.WriteLine("\nIl numero inserito non è presente nell'array");
                         Console.WriteLine("Premere un pulsante per continuare...");
                         Console.ReadLine();
                         break;
+                    case 5:
+                        Console.WriteLine("\nInserire un elemento: ");
+                        elemento = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("\nInserire la posizione nell'array dove si vuole inserire l'elemento: ");
+                        posizione = Convert.ToInt32(Console.ReadLine());
+                        if (Inserimento(ref array, elemento, IndiceAggiunta, ref indice, posizione) == true)
+                        {
+                            Console.WriteLine("\nElemento inserito correttamente");
+                        }
+                        else
+                            Console.WriteLine("\nArray pieno");
+                        Console.WriteLine("Premere un pulsante per continuare...");
+                        Console.ReadLine();
+                        break;
+
                 }
 
             } while (scelta != 0);
@@ -162,6 +176,35 @@ namespace Corsi___21
             }
             //restituisci l'array nuovo
             return a;
+        }
+
+        //funzione di Inserimento in una determinata posizione
+        static bool Inserimento(ref int[] a, int input, int IndiceAggiunta, ref int indice, int posizione)
+        {
+            //dichiarazione della variabile di controllo
+            bool controllo = true;
+            //condizione per verificare se l'array ha raggiunto le sue dimensioni massime
+            if (indice < a.Length)
+            {
+                //utilizziamo una copia dell'indice per il ciclo 
+                IndiceAggiunta = indice;
+                while (IndiceAggiunta >= posizione)
+                {
+                    //spostamento di una posizione in avanti del numero
+                    a[IndiceAggiunta + 1] = a[IndiceAggiunta];
+                    IndiceAggiunta--;
+                }
+                //alla fine avremo aggiunto un elemento quindi incrementiamo di uno l'indice
+                indice++;
+                //dopo aver spostato tutti gli elementi inserire quello desiderato
+                a[posizione] = input;
+            }
+            else
+                controllo = false;
+            //restituzione in base alle dimensioni dell'array
+            return controllo;
+
+
         }
     }
 }
