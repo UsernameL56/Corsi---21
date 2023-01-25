@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -14,6 +14,7 @@ namespace Corsi___21
             //dichiarazioni 
             int[] array = new int[100];
             int elemento;
+            int minimo, massimo;
             string stampa;
             int indice = 0;
             int IndiceRicerca = 0;
@@ -32,6 +33,8 @@ namespace Corsi___21
                 Console.WriteLine("4 - cancellazione di un elemento dall'array");
                 Console.WriteLine("5 - Inserimento di un valore in una posizione dell'array");
                 Console.WriteLine("6 - stampa degli elementi caricati in formato normale");
+                Console.WriteLine("7 - generazione di numeri randomici con parametri scelti dall'utente");
+                Console.WriteLine("8 - troncamento dell'array");
                 Console.WriteLine("0 - uscita dal programma");
                 //scelta delle opzione
                 Console.WriteLine("Inserisci la scelta: ");
@@ -119,6 +122,30 @@ namespace Corsi___21
                         Console.WriteLine("Premere un pulsante per continuare...");
                         Console.ReadLine();
                         break;
+                    case 7:
+                        //stampa per poter andare a capo
+                        Console.WriteLine("Inserire quanti numeri randomici si vogliono inserire: ");
+                        elemento = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Inserire il valore minimo randomico: ");
+                        minimo = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Inserire il valore massimo randomico: ");
+                        massimo = Convert.ToInt32(Console.ReadLine());
+
+                        if (NumeriRandom(ref array, elemento, ref indice, minimo, massimo) == true)
+                        {
+                            Console.WriteLine("\nElemento inserito correttamente");
+                        }
+                        else
+                            Console.WriteLine("\nArray pieno");
+                        Console.ReadLine();
+                        break;
+                    case 8:
+                        //stampa per poter andare a capo
+                        Console.WriteLine("Inserire da che posizione si vuole applicare il troncamento: ");
+                        elemento = Convert.ToInt32(Console.ReadLine());
+                        Troncamento(array, elemento, ref indice);
+
+                        break;
                 }
             } while (scelta != 0);
         }
@@ -142,7 +169,8 @@ namespace Corsi___21
         }
 
         //funzione di stampa in html
-        static string Stampa(int[]a, int i)
+        static string Stampa(int[] a, int i)
+
         {
             //dichiarazione della parte iniziale di html
             string htmlTop = "<html> <head> </head> <body> <tr>";
@@ -154,7 +182,6 @@ namespace Corsi___21
             for (int z = 0; z < i; z++)
             {
                 td = td + " <td> " + a[z] + " </td> ";
-               
             }
             //stringa finale composta dall'insieme di tutte le altre stringe
             string html = htmlTop + td + htmlBottom;
@@ -235,6 +262,35 @@ namespace Corsi___21
                 controllo = false;
             //restituzione in base alle dimensioni dell'array
             return controllo;
+        }
+        
+        //funzione di generazione di numeri randomici
+        static bool NumeriRandom(ref int[]a, int input, ref int indice, int x, int y)
+        {
+            //dichiarazione della variabile di controllo
+            bool controllo = true;
+            int generazione = 0;
+            Random rand = new Random();
+            //condizione per verificare se l'array ha raggiunto le sue dimensioni massime
+            if (indice < a.Length)
+            { 
+                for (int i = 0; i < input; i++)
+                {
+                    
+                    generazione = rand.Next(x, y); 
+                    a[indice] = generazione;
+                    indice++;
+                }
+                controllo = true; 
+            }else
+                controllo= false;
+            return controllo;
+        }
+
+        //funzione di troncamento
+        static void Troncamento(int[] a, int input, ref int indice)
+        {
+            indice = input;
         }
     }
 }
